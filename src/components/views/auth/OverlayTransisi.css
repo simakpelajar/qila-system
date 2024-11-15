@@ -1,0 +1,23 @@
+.overlay-enter {
+  opacity: 0;
+}
+
+.overlay-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+.overlay-exit {
+  opacity: 1;
+}
+
+.overlay-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.overlay-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
