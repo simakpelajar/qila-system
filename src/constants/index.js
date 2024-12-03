@@ -1,4 +1,4 @@
-import {LogoCakap,LogoNeutron,LogoRuangguru,LogoZenius,bukalapak,ruangguru,nadimmakarim,  facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets";
+import {logocakap,logoneutron,logoruangguru,logozenius,bukalapak,ruangguru,nadimmakarim,  facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets";
 
 export const navLinks = [
   {
@@ -180,22 +180,22 @@ export const socialMedia = [
 export const clients = [
   {
     id: "client-1",
-    logo: LogoCakap,
+    logo: logocakap,
     isActive: false,
   },
   {
     id: "client-2",
-    logo: LogoNeutron,
+    logo: logoneutron,
     isActive: false,
   },
   {
     id: "client-3",
-    logo: LogoRuangguru,
+    logo: logoruangguru,
     isActive: false,
   },
   {
     id: "client-4",
-    logo: LogoZenius,
+    logo: logozenius,
     isActive: false,
   },
 ];

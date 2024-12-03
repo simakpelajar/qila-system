@@ -30,16 +30,16 @@ import QuizandFriend from "./QuizandFriend.png";
 import bukalapak from "./bukalapak.jpeg";
 import ruangguru from "./ruangguru.jpg";
 import nadimmakarim from "./nadimmakarim.jpeg";
-import LogoNeutron from '../../assets/LogoNeutron.png';
-import LogoRuangguru from '../../assets/LogoRuangguru.png'; 
-import LogoZenius from '../../assets/LogoZenius.png';
-import LogoCakap from '../../assets/LogoCakap.png';
+import logoneutron from "./logoneutron.png";
+import logoruangguru from "./logoruangguru.png";
+import logozenius from "./logozenius.png";
+import logocakap from "./logocakap.png";
 
 export {
-  LogoNeutron,
-  LogoRuangguru,
-  LogoZenius,
-  LogoCakap,
+  logoneutron,
+  logoruangguru,
+  logozenius,
+  logocakap,
   airbnb,
   bill,
   binance,
