@@ -30,10 +30,10 @@ import QuizandFriend from "./QuizandFriend.png";
 import bukalapak from "./bukalapak.jpeg";
 import ruangguru from "./ruangguru.jpg";
 import nadimmakarim from "./nadimmakarim.jpeg";
-import LogoNeutron from '../../assets/LogoNeutron.png';
-import LogoRuangguru from '../../assets/LogoRuangguru.png'; 
-import LogoZenius from '../../assets/LogoZenius.png';
-import LogoCakap from '../../assets/LogoCakap.png';
+import LogoNeutron from "./LogoNeutron.png";
+import LogoRuangguru from "./LogoRuangguru.png";
+import LogoZenius from "./LogoZenius.png";
+import LogoCakap from "./LogoCakap.png";
 
 export {
   LogoNeutron,
