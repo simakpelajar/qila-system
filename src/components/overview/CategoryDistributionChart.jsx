@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react"; // Pastikan mengimpor useState dan useEffect
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Api from "../../api";
 
-
-const COLORS = ["#6366F1","#EC4899", "#8B5CF6", "#10B981", "#F59E0B"];
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#0088FE", "#00C49F"];
 
 const CategoryDistributionChart = () => {
-
 	const [categoryData, setCategoryData] = useState([]);
-
 
 	useEffect(() => {
 		const fetchCategoryData = async () => {
@@ -20,29 +17,28 @@ const CategoryDistributionChart = () => {
 				console.error("Error fetching category data:", error);
 			}
 		};
-	
+
 		fetchCategoryData();
 	}, []);
-	
+
 	return (
 		<motion.div
-			className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700'
+			className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-6 border border-gray-700"
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.3 }}
 		>
-			<h2 className='text-lg font-medium mb-4 text-gray-100'>Category Exam</h2>
-			<div className='h-80'>
-				<ResponsiveContainer width={"100%"} height={"100%"}>
+			<h2 className="text-xl font-semibold text-gray-100 mb-4">Category Exam</h2>
+			<div style={{ width: "100%", height: 300 }}>
+				<ResponsiveContainer>
 					<PieChart>
 						<Pie
 							data={categoryData}
-							cx={"50%"}
-							cy={"50%"}
-							labelLine={false}
+							cx="50%"
+							cy="50%"
 							outerRadius={80}
-							fill='#8884d8'
-							dataKey='value'
+							fill="#8884d8"
+							dataKey="value"
 							label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
 						>
 							{categoryData.map((entry, index) => (

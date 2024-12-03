@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <img src={logo} alt="hoobank" className="w-[124px] h-[32px]" />
+      <img src={logo} alt="qila" className="w-[124px] h-[32px]" />
 
       {/* Desktop Navigation */}
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
@@ -26,13 +26,13 @@ const Navbar = () => {
           </li>
         ))}
         {/* Sign In and Sign Up buttons with underline animation */}
-       <li className="ml-10 group">
-  <Link to="/SignIn" className="text-dimWhite text-[16px]">Sign In</Link>
-  <div className="h-0.5 bg-secondary scale-x-0 group-hover:scale-100 font-bold transition-transform origin-left rounded-full duration-300 ease-out" />
-</li>
+        <li className="ml-10 group">
+          <Link to="/signin" className="text-dimWhite text-[16px]">Sign In</Link>
+          <div className="h-0.5 bg-secondary scale-x-0 group-hover:scale-100 font-bold transition-transform origin-left rounded-full duration-300 ease-out" />
+        </li>
 
         <li className="ml-6 group">
-          <a href="#signup" className="text-white bg-gray-900 px-4 py-2 rounded-lg text-[16px] hover:bg-secondary-dark">Sign Up</a>
+          <Link to="/signup" className="text-white bg-gray-900 px-4 py-2 rounded-lg text-[16px] hover:bg-secondary-dark">Sign Up</Link>
           <div className="h-0.5 scale-x-0 group-hover:scale-100 transition-transform origin-left rounded-full duration-300 ease-out" />
         </li>
       </ul>
@@ -42,41 +42,58 @@ const Navbar = () => {
         <img
           src={toggle ? close : menu}
           alt="menu"
-          className="w-[28px] h-[28px] object-contain"
+          className="w-[28px] h-[28px] object-contain cursor-pointer z-[100]"
           onClick={() => setToggle(!toggle)}
         />
 
+        {/* Mobile Sidebar */}
         <div
-          className={`${!toggle ? "hidden" : "flex"} p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+          className={`fixed top-0 right-0 h-full w-[70%] bg-gradient-to-b from-black to-blue-800 z-[100] p-6 
+          ${toggle ? 'translate-x-0' : 'translate-x-full'} transition-all duration-300 ease-in-out`}
         >
-          <ul className="list-none flex justify-end items-start flex-1 flex-col">
+          <ul className="list-none flex flex-col mt-14">
             {navLinks.map((nav, index) => (
               <li
                 key={nav.id}
-                className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                  active === nav.title ? "text-white" : "text-dimWhite"
-                } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
-                onClick={() => setActive(nav.title)}
+                className={`font-poppins font-medium cursor-pointer text-[16px] 
+                ${active === nav.title ? "text-white" : "text-dimWhite"}
+                ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
+                onClick={() => {
+                  setActive(nav.title);
+                  setToggle(false);
+                }}
               >
                 <a href={`#${nav.id}`}>{nav.title}</a>
               </li>
             ))}
-            {/* Sign In and Sign Up buttons for mobile */}
-            <li className="mt-4 group">
-              <Link to="/SignIn" className="text-dimWhite text-[16px]">Sign In</Link>
-              <div className="h-0.5 bg-secondary scale-x-0 group-hover:scale-100 font-bold transition-transform origin-left rounded-full duration-300 ease-out" />
+            <li className="mt-4">
+              <Link 
+                to="/signin" 
+                className="text-dimWhite text-[16px] block"
+                onClick={() => setToggle(false)}
+              >
+                Sign In
+              </Link>
             </li>
-            <li className="mt-4 group">
-              <a
-                href="#signup"
-                className="text-white bg-secondary px-4 py-2 rounded-lg text-[16px] hover:bg-secondary-dark"
+            <li className="mt-4">
+              <Link 
+                to="/signup" 
+                className="text-white bg-blue-600 px-4 py-2 rounded-lg text-[16px] inline-block hover:bg-blue-700"
+                onClick={() => setToggle(false)}
               >
                 Sign Up
-              </a>
-              <div className="h-0.5 bg-secondary scale-x-0 group-hover:scale-100 transition-transform origin-left rounded-full duration-300 ease-out" />
+              </Link>
             </li>
           </ul>
         </div>
+
+        {/* Overlay */}
+        {toggle && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-[98]"
+            onClick={() => setToggle(false)}
+          />
+        )}
       </div>
     </nav>
   );

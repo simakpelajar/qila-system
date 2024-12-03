@@ -165,7 +165,7 @@
   cursor: auto !important;
 }
 /* CSS untuk pagination */
-/* CSS untuk pagination */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -180,24 +180,24 @@
 
 
 .page-item {
-  margin: 0 3px;  /* Mengurangi margin untuk memperkecil ukuran */
+  margin: 0 3px;
 }
 
 .page-link {
   display: inline-block;
-  padding: 6px 12px;  /* Menyesuaikan padding agar lebih kecil */
-  font-size: 12px;  /* Mengecilkan font size */
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 600;
   text-align: center;
   text-decoration: none;
-  color: #e0e0e0;  /* Mengubah warna teks agar lebih cocok dengan background */
-  background-color: #333;  /* Menggunakan latar belakang yang lebih gelap */
+  color: #e0e0e0;
+  background-color: #333;
   border-radius: 4px;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .page-link:hover {
-  background-color: #555;  /* Warna hover lebih terang */
+  background-color: #555;
   color: white;
 }
 
@@ -218,4 +218,72 @@
 .previous:hover, .next:hover {
   background-color: #4a90e2;
   color: white;
+}
+
+.client-logo {
+  filter: grayscale(100%);
+  transition: filter 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.client-logo.active {
+  filter: grayscale(0%);
+}
+
+/* Shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Text Shimmer effect */
+.text-shimmer {
+  background: linear-gradient(
+    to right,
+    #fff 20%,
+    #66b3b3 30%,
+    #fff 40%,
+    #66b3b3 50%,
+    #fff 60%,
+    #66b3b3 70%,
+    #fff 80%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }

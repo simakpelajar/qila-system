@@ -26,8 +26,20 @@ import people03 from "./people03.png";
 import Sabit from "./Sabit.png";
 import Cahaya from "./Cahaya.png";
 import Google1 from "./Google1.svg";
+import QuizandFriend from "./QuizandFriend.png";
+import bukalapak from "./bukalapak.jpeg";
+import ruangguru from "./ruangguru.jpg";
+import nadimmakarim from "./nadimmakarim.jpeg";
+import LogoNeutron from "./LogoNeutron.png";
+import LogoRuangguru from "./LogoRuangguru.png";
+import LogoZenius from "./LogoZenius.png";
+import LogoCakap from "./LogoCakap.png";
 
 export {
+  LogoNeutron,
+  LogoRuangguru,
+  LogoZenius,
+  LogoCakap,
   airbnb,
   bill,
   binance,
@@ -36,7 +48,7 @@ export {
   dropbox,
   logo,
   quotes,
-  // robot,
+  QuizandFriend,
   Sabit,
   Cahaya,
   send,
@@ -56,4 +68,7 @@ export {
   people02,
   people03,
   Google1,
+  bukalapak,
+  ruangguru,
+  nadimmakarim,
 };

@@ -1,10 +1,12 @@
-
 import axios from "axios";
 
 const Api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+   baseURL: 'http://localhost:8000/api',
+   headers: {
+     'Content-Type': 'application/json',
+     'Accept': 'application/json'
+   }
 });
-
 
 Api.interceptors.request.use(
   (config) => {
@@ -18,5 +20,7 @@ Api.interceptors.request.use(
     return Promise.reject(error); 
   }
 );
+
+
 
 export default Api;

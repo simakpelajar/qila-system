@@ -21,37 +21,19 @@ const SIDEBAR_ITEMS = [
     name: "Overview",
     icon: BarChart2,
     color: "#6366f1",
-    href: "/admin/overview",
+    href: "/user/overview-user",  // tambahkan slash di depan
   },
   {
     name: "Courses",
     icon: ShoppingBag,
     color: "#8B5CF6",
-    href: "/admin/course"
+    href: "/user/course-user"     // tambahkan slash di depan
   },
   {
-    name: "Users",
+    name: "Raport Detail",
     icon: Users,
     color: "#EC4899",
-    href: "/admin/users"
-  },
-  {
-    name: "Category",
-    icon: ChartBarStacked,
-    color: "#10B981",
-    href: "/admin/category"
-  },
-  // {
-  //   name: "Orders",
-  //   icon: ShoppingCart,
-  //   color: "#F59E0B",
-  //   href: "/admin/orders"
-  // },
-  {
-    name: "Analytics",
-    icon: TrendingUp,
-    color: "#3B82F6",
-    href: "/admin/analytics"
+    href: "/user/raport-user",    // tambahkan slash di depan
   },
   {
     name: "Logout",
@@ -61,7 +43,7 @@ const SIDEBAR_ITEMS = [
   },
 ];
 
-const Sidebar = () => {
+const SidebarUser = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -104,7 +86,7 @@ const Sidebar = () => {
               <Link
                 key={item.href}
                 to={item.href}
-                onClick={item.name === "Logout" ? handleLogout : null} // Trigger logout on click
+                onClick={item.name === "Logout" ? handleLogout : null}
               >
                 <motion.div
                   className={`flex items-center p-4 text-sm font-medium rounded-lg transition-colors mb-2 ${isActive
@@ -139,4 +121,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SidebarUser;

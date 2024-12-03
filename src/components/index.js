@@ -2,13 +2,14 @@ import Navbar from "./Navbar";
 import Hero from "./Hero";
 import Business from "./Business";
 import Stats from "./Stats";
-import Billing from "./Billing";
-import CardDeal from "./CardDeal";
+import Billing from "./Feature";
+import Quotes from "./Quotes";
 import Testimonials from "./Testimonials";
 import Clients from "./Clients";
 import CTA from "./CTA";
 import Footer from "./Footer";
-import SignIn from "./views/auth/SignIn";
+import SignInPage from "../pages/auth/SignIn";
+
 
 export {
   Navbar,
@@ -16,10 +17,10 @@ export {
   Business,
   Stats,
   Billing,
-  CardDeal,
+  Quotes,
   Testimonials,
   Clients,
   CTA,
   Footer,
-  SignIn,
+  SignInPage,
 };

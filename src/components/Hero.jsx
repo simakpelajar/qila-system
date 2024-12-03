@@ -15,30 +15,27 @@ const Hero = () => {
         <div className="flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2">
           <img src={discount} alt="discount" className="w-[32px] h-[32px]" />
           <p className={`${styles.paragraph} ml-2`}>
-            <span className="text-white">100%</span> Discount For{" "}
-            <span className="text-white">1 Month</span> Account
+            <span className="text-white">100%</span> Next Quiz {" "}
+            <span className="text-white">Of </span> The Month 
           </p>
         </div>
 
         <div className="flex flex-col justify-center items-center w-full relative z-10">
-          <h1 className="font-poppins font-semibold ss:text-[72px] text-[52px] text-white ss:leading-[100.8px] leading-[75px] text-center">
+          <h1 className="font-poppins font-semibold text-5xl md:text-7xl leading-tight mb-6">
             <TypeAnimation
               sequence={[
                 "Welcome to QILA SYSTEM",
                 2000,
-                "", // Hapus teks
+                "",
               ]}
               wrapper="span"
               speed={50}
               style={{
-                display: "inline-block",
-                backgroundImage: "linear-gradient(#5ce1e6, #ffff)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                display: "inline-block"
               }}
+              className="bg-gradient-to-r from-cyan-300 via-cyan-100 to-cyan-300 bg-clip-text text-transparent"
               repeat={Infinity}
             />
-
           </h1>
           <h1 className="font-poppins font-semibold ss:text-[68px] text-[52px] text-white ss:leading-[100.8px] leading-[75px] text-center">
             <TypeAnimation
@@ -74,7 +71,7 @@ const Hero = () => {
       </div>
 
       <div className={`ss:hidden ${styles.flexCenter}`}>
-        {/* Konten lain jika diperlukan */}
+      
       </div>
     </section>
   );

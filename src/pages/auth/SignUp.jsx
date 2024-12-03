@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Logo from "../../../assets/logo1.svg";
-import GoogleSvg from "../../../assets/Google1.svg";
-import { CSSTransition } from "react-transition-group";
-import Api from "../../../api/index";
-import axios from "axios";
+import Logo from "../../assets/logo1.svg";
+import GoogleSvg from "../../assets/Google1.svg";
+import Api from "../../api";
+import { toast } from "react-toastify";
 
 const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const [isOverlayVisible, setOverlayVisible] = useState(false);
-    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,127 +18,97 @@ const SignUpPage = () => {
         password: "",
         confirmPassword: "",
     });
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleVerifyEmail = async () => {
-        try {
-            const response = await Api.post("/verify-email", { email });
-            if (response.status === 200) {
-                setShowSuccessPopup(false);
-                navigate("/signin");
-            }
-        } catch (error) {
-            console.error("Error verifying email:", error);
-        }
+    const validatePassword = (pass) => {
+        if (pass.length < 8) return "Password harus minimal 8 karakter.";
+        if (!/[A-Z]/.test(pass)) return "Password harus mengandung huruf besar.";
+        if (!/[a-z]/.test(pass)) return "Password harus mengandung huruf kecil.";
+        if (!/[0-9]/.test(pass)) return "Password harus mengandung angka.";
+        return "";
     };
 
-    const handleSignUp = async () => {
-        setErrors({
+    const validateForm = () => {
+        const newErrors = {
             fullName: "",
             email: "",
             password: "",
             confirmPassword: "",
-        });
-    
-        if (!fullName) {
-            setErrors((prev) => ({
-                ...prev,
-                fullName: "Nama lengkap tidak boleh kosong.",
-            }));
-            return;
-        }
-    
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!emailRegex.test(email)) {
-            setErrors((prev) => ({
-                ...prev,
-                email: "Email tidak valid.",
-            }));
-            return;
-        }
-    
-        if (password !== confirmPassword) {
-            setErrors((prev) => ({
-                ...prev,
-                confirmPassword: "Password dan konfirmasi password tidak cocok.",
-            }));
-            return;
-        }
-    
-        const data = {
-            name: fullName,
-            email: email,
-            password: password,
-            password_confirmation: confirmPassword,
         };
-    
+
+        if (!fullName.trim()) newErrors.fullName = "Nama lengkap harus diisi.";
+        if (!email.trim()) newErrors.email = "Email harus diisi.";
+        if (!password) newErrors.password = "Password harus diisi.";
+        const passwordError = validatePassword(password);
+        if (passwordError) newErrors.password = passwordError;
+        if (password !== confirmPassword) {
+            newErrors.confirmPassword = "Password tidak cocok.";
+        }
+
+        setErrors(newErrors);
+        return !Object.values(newErrors).some(error => error !== "");
+    };
+
+    const checkIfUserExists = async (email) => {
         try {
-            setOverlayVisible(true);
-            const response = await Api.post("/register", data);
-    
-            if (response.status === 200) {
-                setShowSuccessPopup(true); // Menampilkan popup sukses
-            }
+            const response = await Api.post("/check-user", { email });
+            return response.data.exists;
         } catch (error) {
-            if (error.response && error.response.data) {
-                const errorData = error.response.data.errors;
-    
-                if (errorData?.email) {
-                    setErrors((prev) => ({
-                        ...prev,
-                        email: "Email sudah terdaftar.",
-                    }));
-                } else {
-                    setErrors({
-                        fullName: errorData?.name || "",
-                        email: errorData?.email || "",
-                        password: errorData?.password || "",
-                        confirmPassword: errorData?.password_confirmation || "",
-                    });
-                }
-            } else {
-                console.error("Error registrasi:", error);
-                alert("Terjadi kesalahan, coba lagi.");
-            }
-        } finally {
-            setOverlayVisible(false);
+            console.error("Error checking user existence:", error);
+            return false;
         }
     };
-        
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            toast.error("Mohon lengkapi semua field dengan benar.");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            const userExists = await checkIfUserExists(email);
+            if (userExists) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    email: "Email sudah terdaftar.",
+                }));
+                setIsLoading(false);
+                return;
+            }
+
+            const formData = {
+                name: fullName,
+                email: email,
+                password: password,
+                password_confirmation: confirmPassword,
+            };
+
+            const response = await Api.post("/register", formData);
+
+            if (response.data.success) {
+                toast.success("Registrasi berhasil!");
+                navigate('/signin');
+            }
+        } catch (error) {
+            if (error.response?.data) {
+                toast.error("Registrasi gagal Gmail sudah tersedia. ");
+            } else {
+                toast.error("Registrasi gagal. Silakan coba lagi.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
-        <div className="h-screen flex relative">
-            {/* Success Popup */}
-            {showSuccessPopup && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                    <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
-                        <h3 className="text-xl font-semibold text-center mb-4">
-                            Selamat!
-                        </h3>
-                        <p className="text-center text-gray-600 mb-6">
-                            Akun Anda berhasil didaftarkan. Silakan verifikasi email Anda untuk melanjutkan.
-                        </p>
-                        <button
-                            onClick={handleVerifyEmail}
-                            className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Verifikasi Email
-                        </button>
-                    </div>
-                </div>
-            )}
-
-            {/* Overlay */}
-            <CSSTransition
-                in={isOverlayVisible}
-                timeout={500}
-                classNames="page-overlay"
-                unmountOnExit
-            >
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-500" />
-            </CSSTransition>
-
-            {/* Left Side with New Gradient and Blur Effect */}
-            <div className="w-1/2 h-full relative overflow-hidden">
+        <div className="min-h-screen flex flex-col lg:flex-row relative bg-gray-100 lg:bg-white">
+            {/* Gradient Section - Hidden on mobile */}
+            <div className="hidden lg:block lg:w-1/2 min-h-screen relative overflow-hidden">
                 <div
                     className="absolute inset-0"
                     style={{
@@ -164,16 +131,16 @@ const SignUpPage = () => {
                         }}
                     />
                 </div>
-                <div className="absolute left-20 top-48 text-white text-5xl font-poppins italic font-thin leading-[67px] z-10">
+                <div className="absolute left-4 lg:left-20 top-1/2 -translate-y-1/2 text-white text-3xl lg:text-5xl font-poppins italic font-thin leading-relaxed lg:leading-[67px] z-10 p-4">
                     Join us.
                     <br />
                     Create your account now!
                 </div>
             </div>
 
-            {/* Right Side */}
-            <div className="w-1/2 h-full bg-white flex justify-center items-center">
-                <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+            {/* Form Section - Show first on mobile */}
+            <div className="w-full lg:w-1/2 min-h-screen flex justify-center items-center p-4">
+                <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-4 sm:p-8">
                     {/* Logo */}
                     <div className="mb-6 text-center">
                         <img src={Logo} alt="Logo" className="mx-auto w-32" />
@@ -184,7 +151,7 @@ const SignUpPage = () => {
                         <h2 className="text-2xl font-semibold mb-2">Create an account</h2>
                         <p className="text-gray-500 mb-4">Sign up to get started</p>
 
-                        <form>
+                        <form onSubmit={handleSignUp}>
                             {/* Form fields remain the same */}
                             {/* Full Name Input */}
                             <div className="relative mb-4">
@@ -277,18 +244,27 @@ const SignUpPage = () => {
                             </div>
 
                             <button
-                                type="button"
-                                onClick={handleSignUp}
-                                className="w-full py-2 mt-4 bg-blue-600 text-white font-semibold rounded-lg"
+                                type="submit"
+                                disabled={isLoading}
+                                className={`w-full py-2 mt-4 ${
+                                    isLoading ? 'bg-blue-400' : 'bg-blue-600'
+                                } text-white font-semibold rounded-lg`}
                             >
-                                Sign Up
+                                {isLoading ? 'Loading...' : 'Sign Up'}
                             </button>
                         </form>
 
                         <div className="my-4 text-center">
                             <p className="text-sm text-gray-500">
                                 Already have an account?{" "}
-                                <a href="/signin" className="text-blue-600 font-medium">Sign in</a>
+                                <span
+                                    className="text-blue-500 hover:underline cursor-pointer"
+                                    onClick={() => {
+                                        navigate("/signin");
+                                    }}
+                                >
+                                    Sign In
+                                </span>
                             </p>
                         </div>
 

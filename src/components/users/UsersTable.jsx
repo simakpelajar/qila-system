@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, Edit, Trash } from "lucide-react"; // Import icons
+import { Search, Edit, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Api from "../../api";
@@ -11,24 +11,24 @@ const UsersTable = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0); // Update to 0 for pagination index
+    const [currentPage, setCurrentPage] = useState(0);
     const [selectedUser, setSelectedUser] = useState(null);
     const usersPerPage = 5;
 
-    // Fetch users from the API
+
     const fetchUsers = async () => {
         try {
-            const response = await Api.get('/users');
+            const response = await Api.get('/get-user');
             console.log("API response:", response);
-            const data = response.data;
+            const data = response.data.data;
 
             if (Array.isArray(data)) {
                 const usersWithRoles = data
-                    .filter((user) => user.email !== "superadmin@gmail.com") // Exclude superadmin
+                    .filter((user) => user.email !== "superadmin@gmail.com") 
                     .map((user) => ({
                         ...user,
-                        role: "Student", // Default role
-                        status: "Active", // Default status
+                        role: "Student",
+                        status: "Active",
                     }));
                 setUsers(usersWithRoles);
                 setFilteredUsers(usersWithRoles);
@@ -46,7 +46,7 @@ const UsersTable = () => {
         fetchUsers();
     }, []);
 
-    // Handle search input and filter the users
+
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
@@ -58,7 +58,7 @@ const UsersTable = () => {
         setFilteredUsers(filtered);
     };
 
-    // Pagination logic
+
     const indexOfLastUser = (currentPage + 1) * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -66,8 +66,8 @@ const UsersTable = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Handle delete user
-    const handleDelete = (userId) => {
-        Swal.fire({
+    const handleDelete = async (userId) => {
+        const result = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning',
@@ -77,49 +77,46 @@ const UsersTable = () => {
             customClass: {
                 confirmButton: 'swal-custom-cursor',
                 cancelButton: 'swal-custom-cursor',
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Api.delete(`/delete-user/${userId}`)
-                    .then(() => {
-                        setUsers(users.filter(user => user.id !== userId));
-                        setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
-                        toast.success(`User deleted`, {
-                            position: "top-right",
-                            autoClose: 1500,
-                        });
-                    })
-                    .catch((error) => {
-                        console.error("Error deleting user:", error);
-                        toast.error("Failed to delete user.");
-                    });
-            }
+            },
         });
+    
+        if (result.isConfirmed) {
+            try {
+                await Api.delete(`/get-user/${userId}`);
+                setUsers(users.filter(user => user.id !== userId));
+                setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
+                toast.success(`User deleted`, {
+                    position: "top-right",
+                    autoClose: 1500,
+                });
+            } catch (error) {
+                console.error("Error deleting user:", error);
+                toast.error("Failed to delete user.");
+            }
+        }
     };
 
-    // Handle update user (show update modal)
+
     const handleUpdate = (user) => {
         setSelectedUser(user);
     };
 
-    // Handle form submission for updating user
-    const handleSubmitUpdate = (updatedUser) => {
-        Api.put(`/update-user/${updatedUser.id}`, updatedUser)
-            .then((response) => {
-                setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
-                setFilteredUsers(filteredUsers.map(user => user.id === updatedUser.id ? updatedUser : user));
-                toast.success(`User updated successfully!`, {
-                    position: "top-right",
-                    autoClose: 1500,
-                });
-                setSelectedUser(null); // Close update modal
-            })
-            .catch((error) => {
-                console.error("Error updating user:", error);
-                toast.error("Failed to update user.");
+    const handleSubmitUpdate = async (updatedUser) => {
+        try {
+            const response = await Api.put(`/get-user/${updatedUser.id}`, updatedUser); // Await untuk operasi async
+            setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
+            setFilteredUsers(filteredUsers.map(user => user.id === updatedUser.id ? updatedUser : user));
+            toast.success(`User updated successfully!`, {
+                position: "top-right",
+                autoClose: 1500,
             });
+            setSelectedUser(null); // Tutup modal
+        } catch (error) {
+            console.error("Error updating user:", error);
+            toast.error("Failed to update user.");
+        }
     };
-
+    
     return (
         <motion.div
             className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700"
@@ -221,23 +218,23 @@ const UsersTable = () => {
             </div>
 
             {/* Pagination */}
-            <div className="mt-4">
-                <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    pageCount={Math.ceil(filteredUsers.length / usersPerPage)}
-                    onPageChange={({ selected }) => paginate(selected)}
-                    containerClassName={"pagination"}
-                    pageClassName={"page-item"}
-                    pageLinkClassName={"page-link"}
-                    previousClassName={"page-item"}
-                    previousLinkClassName={"page-link"}
-                    nextClassName={"page-item"}
-                    nextLinkClassName={"page-link"}
-                    disabledClassName={"disabled"}
-                    activeClassName={"active"}
-                />
-            </div>
+            <div className="mt-4 flex justify-center">
+    <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        pageCount={Math.ceil(filteredUsers.length / usersPerPage)}
+        onPageChange={({ selected }) => paginate(selected)}
+        containerClassName={"flex items-center gap-2"}
+        pageClassName={"page-item px-3 py-1 bg-gray-700 hover:bg-blue-500 rounded-lg text-white"}
+        pageLinkClassName={"text-gray-300"}
+        previousClassName={"px-3 py-1 rounded-lg bg-gray-700 hover:bg-gray-600"}
+        previousLinkClassName={"text-gray-300"}
+        nextClassName={"px-3 py-1 rounded-lg bg-gray-700 hover:bg-gray-600"}
+        nextLinkClassName={"text-gray-300"}
+        disabledClassName={"opacity-50"}
+        activeClassName={"!bg-blue-500"}
+    />
+</div>
 
       {/* Edit Popup */}
 	  <Popup open={selectedUser !== null} closeOnDocumentClick onClose={() => setSelectedUser(null)}>

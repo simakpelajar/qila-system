@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Logo from "../../../assets/logo1.svg";
-import GoogleSvg from "../../../assets/Google1.svg";
+import Logo from "../../assets/logo1.svg";
+import GoogleSvg from "../../assets/Google1.svg";
 import { CSSTransition } from "react-transition-group";
-import Api from "../../../api/index";
+import Api from "../../api";
+
 
 const SignInPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -18,22 +19,21 @@ const SignInPage = () => {
     });
     const navigate = useNavigate();
 
-    // Fungsi untuk validasi email
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     };
 
-    // Reset error untuk field tertentu
+
     const clearError = (field) => {
         setErrors(prev => ({ ...prev, [field]: "" }));
     };
 
     const handleSignIn = async () => {
-        // Reset semua error
+
         setErrors({ email: "", password: "", general: "" });
 
-        // Validasi input
+   
         let hasError = false;
         if (!email) {
             setErrors(prev => ({ ...prev, email: "Email is required" }));
@@ -66,6 +66,8 @@ const SignInPage = () => {
 
                 if (response.data.user.email === "superadmin@gmail.com") {
                     navigate("/admin/overview");
+                } else if (response.data.user.email !== "superadmin@gmail.com") {
+                    navigate("/user/overview-user");
                 } else {
                     setErrors(prev => ({
                         ...prev,
@@ -89,7 +91,7 @@ const SignInPage = () => {
     };
 
     return (
-        <div className="h-screen flex relative">
+        <div className="min-h-screen flex flex-col lg:flex-row relative">
             <CSSTransition
                 in={isOverlayVisible}
                 timeout={500}
@@ -99,8 +101,8 @@ const SignInPage = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-500" />
             </CSSTransition>
 
-            <div className="w-1/2 h-full bg-white flex justify-center items-center">
-                <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+            <div className="w-full lg:w-1/2 min-h-screen bg-white flex justify-center items-center">
+                <div className="w-full max-w-md p-4 sm:p-8 bg-white rounded-lg">
                     <div className="mb-6 text-center">
                         <img src={Logo} alt="Logo" className="mx-auto w-32" />
                     </div>
@@ -211,7 +213,7 @@ const SignInPage = () => {
                 </div>
             </div>
 
-            <div className="w-1/2 h-full relative overflow-hidden">
+            <div className="hidden lg:block w-full lg:w-1/2 min-h-screen relative overflow-hidden">
                 <div
                     className="absolute inset-0"
                     style={{
@@ -235,7 +237,7 @@ const SignInPage = () => {
                     />
                 </div>
 
-                <div className="absolute left-20 top-48 text-white text-5xl font-poppins italic font-thin leading-[67px] z-10">
+                <div className="absolute left-4 lg:left-20 top-1/2 -translate-y-1/2 text-white text-3xl lg:text-5xl font-poppins italic font-thin leading-relaxed lg:leading-[67px] z-10 p-4">
                     Welcome back!
                     <br />
                     Please login to continue.

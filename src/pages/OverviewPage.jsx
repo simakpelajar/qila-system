@@ -12,8 +12,8 @@ import Api from "../api";
 const OverviewPage = () => {
 
 	const [stats, setStats] = useState({
-		totalExamIncomplete: 0,
-		newUsers: 0,
+		totalCourse: 0,
+		totalUsers: 0,
 		totalCategory: 0,
 		averageScore: 0,
 	});
@@ -23,13 +23,14 @@ const OverviewPage = () => {
 			try {
 				const response = await Api.get("/stats");
 
-
-				setStats({
-					totalExamIncomplete: response.data.totalExamActive,
-					newUsers: response.data.newUsers,
-					totalCategory: response.data.totalCategory,
-					averageScore: response.data.averageScore,
-				});
+				if (response.data) {
+					setStats({
+						totalCourse: response.data.totalCourse,
+						totalUsers: response.data.totalUsers,
+						totalCategory: response.data.totalCategory,
+						averageScore: response.data.averageScore,
+					});
+				}
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -51,15 +52,15 @@ const OverviewPage = () => {
 					transition={{ duration: 1 }}
 				>
 					<StatCard
-						name="Total Exam Incomplete"
+						name="Total Course"
 						icon={Zap}
-						value={stats.totalExamIncomplete}
+						value={stats.totalCourse}
 						color="#6366F1"
 					/>
 					<StatCard
-						name="New Users"
+						name="Total Users"
 						icon={Users}
-						value={stats.newUsers}
+						value={stats.totalUsers}
 						color="#8B5CF6"
 					/>
 					<StatCard

@@ -1,4 +1,4 @@
-import { people01, people02, people03, facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets";
+import {LogoCakap,LogoNeutron,LogoRuangguru,LogoZenius,bukalapak,ruangguru,nadimmakarim,  facebook, instagram, linkedin, twitter, airbnb, binance, coinbase, dropbox, send, shield, star  } from "../assets";
 
 export const navLinks = [
   {
@@ -47,26 +47,26 @@ export const feedback = [
   {
     id: "feedback-1",
     content:
-      "Money is only a tool. It will take you wherever you wish, but it will not replace you as the driver.",
-    name: "Herman Jensen",
-    title: "Founder & Leader",
-    img: people01,
+      "Qila System has transformed the way we engage with learning. It’s a fun and interactive platform that keeps our team motivated and curious.",
+    name: "Achmad Zaky",
+    title: "CEO 2019",
+    img: bukalapak,
   },
   {
     id: "feedback-2",
     content:
-      "Money makes your life easier. If you're lucky to have it, you're lucky.",
-    name: "Steve Mark",
-    title: "Founder & Leader",
-    img: people02,
+    "Thanks to Qila System, learning has become a game for us. It’s easy to use, and our students love competing while gaining knowledge!",
+    name: "Nadiem Makarim",
+    title: "CEO 2019",
+    img: nadimmakarim,
   },
   {
     id: "feedback-3",
     content:
-      "It is usually people in the money business, finance, and international trade that are really rich.",
-    name: "Kenn Gallagher",
-    title: "Founder & Leader",
-    img: people03,
+    "Qila System makes quizzes engaging and fun. It’s the perfect blend of entertainment and education for our community.",
+    name: "Belva Devara",
+    title: "CEO and Co-Fouder",
+    img: ruangguru,
   },
 ];
 
@@ -180,18 +180,22 @@ export const socialMedia = [
 export const clients = [
   {
     id: "client-1",
-    logo: airbnb,
+    logo: LogoCakap,
+    isActive: false,
   },
   {
     id: "client-2",
-    logo: binance,
+    logo: LogoNeutron,
+    isActive: false,
   },
   {
     id: "client-3",
-    logo: coinbase,
+    logo: LogoRuangguru,
+    isActive: false,
   },
   {
     id: "client-4",
-    logo: dropbox,
+    logo: LogoZenius,
+    isActive: false,
   },
 ];

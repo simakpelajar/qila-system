@@ -1,0 +1,16 @@
+
+
+/* Category Badge Styles */
+.category-badge {
+  display: inline-block;
+  min-width: 120px; /* tetapkan lebar minimum */
+  max-width: 200px; /* tetapkan lebar maksimum */
+  padding: 4px 12px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
