@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-   baseURL: 'https://qila.texnoz.com/api',
+   baseURL: 'https://qila.texnoz.com/api/',
    headers: {
      'Content-Type': 'application/json',
      'Accept': 'application/json'
